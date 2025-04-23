@@ -15,8 +15,8 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Link, useNavigate } from "react-router-dom";
 
-function listUsers() {
-  const [users, setUsers] = useState([]);
+function listEventos() {
+  const [events, setEventos] = useState([]);
   const [alert, setalert] = useState({
     // Visibilidade (false = oculto; true = visivel)
     open: false,
@@ -40,12 +40,12 @@ function listUsers() {
 
   const navigate = useNavigate();
 
-  async function getUsers() {
+  async function getEvents() {
     // Chamada da Api
-    await api.getUsers().then(
+    await api.getEvents().then(
       (response) => {
-        console.log(response.data.users);
-        setUsers(response.data.users);
+        console.log(response.data.events);
+        setEventos(response.data.events);
       },
       (error) => {
         console.log("Erro ", error);
@@ -53,10 +53,10 @@ function listUsers() {
     );
   }
 
-  async function deleteUser(id) {
+  async function deleteEvento(id) {
     try {
-      await api.deleteUser(id);
-      await getUsers();
+      await api.deleteEvento(id);
+      await getEvents();
       showAlert("success", "Usuário Excluido com Sucesso!");
     } catch (error) {
       console.log("Erro ao deletar usuario...", error);
@@ -64,24 +64,21 @@ function listUsers() {
     }
   }
 
-  const listUsers = users.map((user) => {
+  const listEventos = events.map((evento) => {
     return (
-      <TableRow key={user.id_usuario}>
-        <TableCell align="center">{user.name}</TableCell>
-        <TableCell align="center">{user.email}</TableCell>
-        <TableCell align="center">{user.cpf}</TableCell>
+      <TableRow key={evento.id_evento}>
+        <TableCell align="center">{evento.nome}</TableCell>
+        <TableCell align="center">{evento.descricao}</TableCell>
+        <TableCell align="center">{evento.data_hora}</TableCell>
+        <TableCell align="center">{evento.local}</TableCell>
         <TableCell align="center">
-          <IconButton onClick={() => deleteUser(user.id_usuario)}>
+          <IconButton onClick={() => deleteEvento(evento.id_evento)}>
             <DeleteIcon color="error" />
           </IconButton>
         </TableCell>
       </TableRow>
     );
   });
-
-  function Eventos() {
-    navigate("/evento");
-  }
 
   function logout() {
     localStorage.removeItem("authenticated");
@@ -92,7 +89,7 @@ function listUsers() {
     // if(!localStorage.getItem("authenticated")){
     //   navigate("/")
     // }
-    getUsers();
+    getEvents();
   }, []);
 
   return (
@@ -101,23 +98,21 @@ function listUsers() {
         open={alert.open}
         autoHideDuration={3000}
         onClose={handleCloseAlert}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        anchorOrigin={{vertical:"top", horizontal:"center"}}
       >
-        <Alert
-          onClose={handleCloseAlert}
-          severity={alert.severity}
-          sx={{
-            width: "100%",
-          }}
+        <Alert onClose={handleCloseAlert} severity={alert.severity}
+        sx={{
+          width:"100%"
+        }}
         >
           {alert.message}
         </Alert>
       </Snackbar>
-      {users.length == 0 ? (
-        <h1>Carregando Usuarios</h1>
+      {events.length == 0 ? (
+        <h1>Carregando Eventos</h1>
       ) : (
         <div>
-          <h5>Lista de usuários</h5>
+          <h5>Lista de Eventos</h5>
           <TableContainer component={Paper} style={{ margin: "2px" }}>
             <Table size="small">
               <TableHead
@@ -125,35 +120,22 @@ function listUsers() {
               >
                 <TableRow>
                   <TableCell align="center">Nome</TableCell>
-                  <TableCell align="center">Email</TableCell>
-                  <TableCell align="center">CPF</TableCell>
+                  <TableCell align="center">Descrição</TableCell>
+                  <TableCell align="center">Horario</TableCell>
+                  <TableCell align="center">Local</TableCell>
                   <TableCell align="center">LIXO POR AQUI</TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody>{listUsers}</TableBody>
+              <TableBody>{listEventos}</TableBody>
             </Table>
           </TableContainer>
-          <Button
-            fullWidth
-            variant="contained"
-            onClick={logout}
-            style={{ marginBottom: "10px" }}
-          >
+          <Button fullWidth variant="contained" onClick={logout}>
             SAIR
           </Button>
-
-          <Button
-            fullWidth
-            variant="contained"
-            to="/evento"
-            onClick={Eventos}
-            style={{ marginTop: "10px" }}
-          >
-            Eventos
-          </Button>
+          
         </div>
       )}
     </div>
   );
 }
-export default listUsers;
+export default listEventos;
