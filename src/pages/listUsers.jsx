@@ -14,6 +14,7 @@ import { Button, IconButton, Alert, Snackbar } from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Link, useNavigate } from "react-router-dom";
+import ConfirmDelete from "../components/ConfirmDelete";
 
 function listUsers() {
   const [users, setUsers] = useState([]);
@@ -40,6 +41,13 @@ function listUsers() {
 
   const navigate = useNavigate();
 
+  const [userToDelete, SetUserToDelete] = useState("");
+  const [modalOpen, setModalOpen] = useState("");
+
+  const openDeleteModal = (id, name) => {
+    SetUserToDelete({ id: id, name: name });
+    setModalOpen(true);
+  };
   async function getUsers() {
     // Chamada da Api
     await api.getUsers().then(
@@ -53,14 +61,16 @@ function listUsers() {
     );
   }
 
-  async function deleteUser(id) {
+  async function deleteUser() {
     try {
-      await api.deleteUser(id);
+      await api.deleteUser(userToDelete.id);
       await getUsers();
       showAlert("success", "Usuário Excluido com Sucesso!");
+      setModalOpen(false)
     } catch (error) {
       console.log("Erro ao deletar usuario...", error);
       showAlert("Error", error.response.data.error);
+      setModalOpen(false)
     }
   }
 
@@ -71,7 +81,9 @@ function listUsers() {
         <TableCell align="center">{user.email}</TableCell>
         <TableCell align="center">{user.cpf}</TableCell>
         <TableCell align="center">
-          <IconButton onClick={() => deleteUser(user.id_usuario)}>
+          <IconButton
+            onClick={() => openDeleteModal(user.id_usuario, user.name)}
+          >
             <DeleteIcon color="error" />
           </IconButton>
         </TableCell>
@@ -113,6 +125,12 @@ function listUsers() {
           {alert.message}
         </Alert>
       </Snackbar>
+      <ConfirmDelete 
+      open={modalOpen} 
+      userName={userToDelete.name}
+      onConfirm={deleteUser}
+      onClose={()=>setModalOpen(false)}
+      />
       {users.length == 0 ? (
         <h1>Carregando Usuarios</h1>
       ) : (
