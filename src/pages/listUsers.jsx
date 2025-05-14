@@ -132,7 +132,7 @@ function listUsers() {
       onClose={()=>setModalOpen(false)}
       />
       {users.length == 0 ? (
-        <h1>Carregando Usuarios</h1>
+        <h1 style={{ textAlign: "center" }}>Carregando Usuarios</h1>
       ) : (
         <div>
           <h5>Lista de usuários</h5>

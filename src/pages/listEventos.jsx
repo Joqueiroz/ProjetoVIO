@@ -109,7 +109,7 @@ function listEventos() {
         </Alert>
       </Snackbar>
       {events.length == 0 ? (
-        <h1>Carregando Eventos</h1>
+        <h1 style={{ textAlign: "center" }}>Carregando Eventos</h1>
       ) : (
         <div>
           <h5>Lista de Eventos</h5>
