@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import { Link, useNavigate } from "react-router-dom";
+import { Link , useNavigate} from "react-router-dom";
 import { useState } from "react";
 import api from "../axios/axios"
 
@@ -15,7 +15,6 @@ function Login() {
     email: "",
     password: "",
   });
-  
   const navigate = useNavigate();
   const onChange = (event) => {
     const { name, value } = event.target;
@@ -30,11 +29,10 @@ function Login() {
   async function login(){
     await api.postLogin(user).then(
       (response)=>{
-        if(response.data.message){
-        localStorage.setItem("authenticated", true)
-        localStorage.setItem("token", response.data.token);
+        alert(response.data.message)
+        localStorage.setItem('authenticated',true)
+        localStorage.setItem('token', response.data.token)
         navigate("users/")
-        }
       },
     (error)=>{
       console.log(error)
@@ -56,7 +54,7 @@ function Login() {
         <Avatar
           sx={{
             margin: 1,
-            backgroundColor: "purple  ",
+            backgroundColor: "red",
           }}
         >
           <LockOutlinedIcon />
@@ -100,20 +98,18 @@ function Login() {
             sx={{
               mt: 3,
               mb: 2,
-              backgroundColor: "purple",
+              backgroundColor: "red",
             }}
           >
             Entrar
           </Button>
-          <Button type="submit"
+          <Button
             fullWidth
             variant="contained"
-            sx={{
-              mt: 3,
-              mb: 2,
-              backgroundColor: "purple",
-            }}>
-            <Link to="/cadastro">Cadastro</Link>
+            sx={{ mt: 3, mb: 2, backgroundColor: "red" }}
+            onClick={() => navigate("/CreateEvent")}
+          >
+            CADASTRO
           </Button>
         </Box>
         

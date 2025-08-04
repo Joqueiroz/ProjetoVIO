@@ -1,21 +1,22 @@
 import React from "react";
-import AppBar from "@mui/material/AppBar";
+import AppBar from "@mui/material/AppBar";  
 import Toolbar from "@mui/material/Toolbar";
-import AccountCircleIcon  from "@mui/icons-material/AccountCircle";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import IconButton from "@mui/material/IconButton"
 
-
-const Header = () =>{
+const Header = () => {
     return(
-        <AppBar sx={{backgroundColor:"purple"}}>
-            <Toolbar sx={{display:"flex", justifyContent:"flex-end"}}>
-                <IconButton color="inherit" onClick={()=>{console.log("Clicaado")}}>
-                    <AccountCircleIcon fontSize="large"/>
+        <AppBar sx={{backgroundColor:"red"}}>
+            <Toolbar sx={{display:"flex",
+        justifyContent:"flex-end"}}>
+                <IconButton color="inherit" onClick={()=>{
+                    console.log("Clicou ai no bgl ae vei")
+                }}>
+                    <AccountCircleIcon fontSize="large" />
                 </IconButton>
             </Toolbar>
-            
         </AppBar>
     )
-}
+};
 
 export default Header;
