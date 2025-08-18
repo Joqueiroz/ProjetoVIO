@@ -19,6 +19,21 @@ api.interceptors.request.use(
     (error) => Promise.reject(error)
 );
 
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response){
+            if(error.response.status === 403 && error.response.data.auth === false)
+                localStorage.setItem("refresh_token", true);
+                localStorage.removeItem("token");
+                localStorage.removeItem("authenticated");
+                window.location.href ="/";
+        }
+        return Promise.reject(error);
+    }
+   
+)
+
 const sheets = {
     getUsers:()=>api.get("user"),
     postCadastro:(user)=>api.post("user", user),
